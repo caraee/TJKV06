@@ -165,6 +165,8 @@ p_weeklyBG<-ggplot(weekly_monitoring[weekly_monitoring$Days>=-2,],
 p_weeklyBG
 ggsave("BG_Bayes.png",path="./Figures/weekly",width = 20, height = 12, units = "cm",dpi=300)
 
+
+###### Comparisons #####
 BGtab1<-rbind(
   hypothesis(fit_BG,"DaysNom10+FullGroupFemale_TC:DaysNom10-DaysNomM2-FullGroupFemale_TC:DaysNomM2=0")$hypothesis,
   hypothesis(fit_BG,"DaysNom15+FullGroupFemale_TC:DaysNom15-DaysNomM2-FullGroupFemale_TC:DaysNomM2=0")$hypothesis,
@@ -256,20 +258,7 @@ BGtab1<-rbind(
   hypothesis(fit_BG,"DaysNom143+FullGroupMale_FP:DaysNom143-DaysNomM2-FullGroupMale_FP:DaysNomM2<0")$hypothesis,
   hypothesis(fit_BG,"DaysNom164+FullGroupMale_FP:DaysNom164-DaysNomM2-FullGroupMale_FP:DaysNomM2<0")$hypothesis,
   hypothesis(fit_BG,"DaysNom183+FullGroupMale_FP:DaysNom183-DaysNomM2-FullGroupMale_FP:DaysNomM2<0")$hypothesis,
-  hypothesis(fit_BG,"DaysNom191+FullGroupMale_FP:DaysNom191-DaysNomM2-FullGroupMale_FP:DaysNomM2<0")$hypothesis,
-  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom22)=0")$hypothesis,
-  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom29)=0")$hypothesis,
-  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom36)=0")$hypothesis,
-  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom50)=0")$hypothesis,
-  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom64)<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom78<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom92<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom99<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom130<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom143<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom164<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom183<0")$hypothesis,
-  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom191<0")$hypothesis
+  hypothesis(fit_BG,"DaysNom191+FullGroupMale_FP:DaysNom191-DaysNomM2-FullGroupMale_FP:DaysNomM2<0")$hypothesis
 )
 
 BGtab2<-rbind(
@@ -300,6 +289,19 @@ BGtab2<-rbind(
   hypothesis(fit_BG,"FullGroupFemale_KC+FullGroupFemale_KC:DaysNom164<0")$hypothesis,
   hypothesis(fit_BG,"FullGroupFemale_KC+FullGroupFemale_KC:DaysNom183<0")$hypothesis,
   hypothesis(fit_BG,"FullGroupFemale_KC+FullGroupFemale_KC:DaysNom191<0")$hypothesis,
+  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom22)=0")$hypothesis,
+  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom29)=0")$hypothesis,
+  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom36)=0")$hypothesis,
+  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom50)=0")$hypothesis,
+  hypothesis(fit_BG,"(FullGroupFemale_TC+FullGroupFemale_TC:DaysNom64)<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom78<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom92<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom99<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom130<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom143<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom164<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom183<0")$hypothesis,
+  hypothesis(fit_BG,"FullGroupFemale_TC+FullGroupFemale_TC:DaysNom191<0")$hypothesis,
   hypothesis(fit_BG,"FullGroupMale_TC+FullGroupMale_TC:DaysNom10-
            FullGroupMale_KC-FullGroupMale_KC:DaysNom10>0")$hypothesis,
   hypothesis(fit_BG,"FullGroupMale_TC+FullGroupMale_TC:DaysNom15-
@@ -2048,6 +2050,8 @@ GSISCPtab3<-rbind(
 # ITT$FullGroup<-paste(ITT$Sex,"_",ITT$Group,sep="")
 # ITT$FullGroup<-factor(ITT$FullGroup,levels = levels(weekly_monitoring$FullGroup))
 ITT<-ITT[!is.na(ITT$BG.Start),]
+ITT$Sex<-sapply(ITT$AnimalID,function(a){
+  animalTable$Sex[animalTable$AnimalID==a]})
 
 #drop rescued animal
 ITT<-filter(ITT,!(AnimalID=="TJKV06M.03"&Time>60))
@@ -2536,7 +2540,7 @@ write_csv(ff_ITT_CP,file="./ITT_CP.csv")
 
 breaks<-c(0,30,60);limits<-c(-5,65)
 
-p_ITT_CP<-ggplot(ITT_CP,
+p_ITT_CP<-ggplot(filter(ITT,Time%in%breaks),
           aes(x=Time,y=CP.End*1000/3020.29,colour=FullGroup,group=FullGroup,fill=FullGroup))+
   facet_grid(Sex~.,scales = "fixed")+
   geom_linerange(aes(ymin=CP.Start*1000/3020.29,ymax=CP.End*1000/3020.29,group=AnimalID),
@@ -2577,15 +2581,14 @@ p_ITT_CP<-ggplot(ITT_CP,
   theme(legend.text = element_text(family = "Arial",color="black",size=8), 
         legend.title = element_blank(),
         legend.background = element_blank())+
-  geom_smooth(data = ff_ITT_CP, 
+  geom_smooth(data = ff_ITT_CP,
               aes(y = Estimate, ymin = Q2.5, ymax = Q97.5,
                   fill = FullGroup,colour=FullGroup),
-              stat = "identity", 
+              stat = "identity",
               alpha = 1/4, size = 1)+
-  geom_point(data = ff_ITT_CP, 
+  geom_point(data = ff_ITT_CP,
              aes(y = Estimate,shape=FullGroup),
              position=pd,size=2,alpha=0.7)
-  # coord_fixed(ratio=(20/2))
 p_ITT_CP
 ggsave("CP_ITT_Bayes.png", path="./Figures/GSIS",width = 22, height = 14, units = "cm")
 
@@ -2664,7 +2667,7 @@ ITTCPtab3<-rbind(
   hypothesis(fit_ITT_CP,"(Intercept+FullGroupMale_TC+TimeNom60+FullGroupMale_TC:TimeNom60)-
              (Intercept+FullGroupFemale_TC+TimeNom60+FullGroupFemale_TC:TimeNom60)>0")$hypothesis,
   hypothesis(fit_ITT_CP,"(Intercept+FullGroupMale_KC)-
-             (Intercept+FullGroupFemale_KC)>0")$hypothesis,
+             (Intercept+FullGroupFemale_KC)<0")$hypothesis,
   hypothesis(fit_ITT_CP,"(Intercept+FullGroupMale_KC+TimeNom30+FullGroupMale_KC:TimeNom30)-
              (Intercept+FullGroupFemale_KC+TimeNom30+FullGroupFemale_KC:TimeNom30)>0")$hypothesis,
   hypothesis(fit_ITT_CP,"(Intercept+FullGroupMale_KC+TimeNom60+FullGroupMale_KC:TimeNom60)-
@@ -4026,20 +4029,14 @@ BGtab1$Site<-str_split_fixed(BGtab1$Hypothesis,"[:+]",3)[,2]|>
   str_replace_all("FullGroupMale_","")
 BGtab1$Site[!grepl("FullGroup",BGtab1$Hypothesis)]<-"FP"
 BGtab1$Sex[!grepl("FullGroup",BGtab1$Hypothesis)]<-"Female"
-BGtab1$FullGroup=paste(BGtab1$Sex,BGtab1$Site,sep="_")
 
-BGtab1$Weeks<-str_split_fixed(BGtab1$Hypothesis, 
-                              boundary("word"),5)[,1]|>
-  str_replace_all("DaysNom","")|>
-  as.numeric()/7
-BGtab1$Weeks[!grepl("[-]",BGtab1$Hypothesis)]<-str_split_fixed(BGtab1$Hypothesis[!grepl("[-]",BGtab1$Hypothesis)],
-                                                               "[:)]",3)[,2]|>
+BGtab1$Weeks<-str_extract(BGtab1$Hypothesis,"DaysNom[0-9]{1,3}")|>
   str_replace_all("DaysNom","")|>
   as.numeric()/7
 BGtab1$Weeks<-round(BGtab1$Weeks)
 
 SuppTab3<-BGtab1 |> select(c(Estimate,CI.Lower,CI.Upper,
-                             Evid.Ratio,Sex,Weeks,Site,FullGroup))|>
+                             Evid.Ratio,Sex,Weeks,Site))|>
   mutate(Evid.Ratio=case_when(BGtab1$Evid.Ratio<=10^(3/2)~"Strong",
                               BGtab1$Evid.Ratio<=10^(2)~"Very strong",
                               BGtab1$Evid.Ratio>10^(2)~"Decisive")) |>
@@ -4060,7 +4057,6 @@ SuppTab3<-BGtab1 |> select(c(Estimate,CI.Lower,CI.Upper,
   cols_move_to_start(
     columns = c(Sex,Site,Weeks)
   )|>
-  cols_hide(FullGroup)|>
   cols_label(CI.Lower = "Lower Bound",
              CI.Upper = "Upper Bound",
              Evid.Ratio = "Strength of Evidence",
@@ -4287,6 +4283,83 @@ SuppTab5
 
 gtsave(SuppTab5,"SuppTab5.pdf",path="./Tables")
 
+
+GSISBGtab2<-filter(GSISBGtab2,Star=="*")
+GSISBGtab2$Sex<-ifelse(grepl("Female",GSISBGtab2$Hypothesis),"Female","Male")
+GSISBGtab2$Sex[!grepl("FullGroup",GSISBGtab2$Hypothesis)]<-"Female"
+
+GSISBGtab2$Site<-str_extract(GSISBGtab2$Hypothesis,"FullGroup(Female|Male)[_][A-Z]{2}")|>
+  str_replace_all("FullGroupFemale_","")|>
+  str_replace_all("FullGroupMale_","")
+GSISBGtab2$Site[is.na(GSISBGtab2$Site)]<-"FP"
+
+GSISBGtab2$Time<-str_extract(GSISBGtab2$Hypothesis,"TimeNom[0-9]{1,3}")|>
+  str_replace_all("TimeNom","")|>as.numeric()
+GSISBGtab2$Time[is.na(GSISBGtab2$Time)]<-0
+
+GSISBGtab2$Weeks<-str_extract(GSISBGtab2$Hypothesis,"WeeksNom[0-9]{1,2}")|>
+  str_replace_all("sNom"," ")
+
+GSISBGtab2$Weeks<-factor(GSISBGtab2$Weeks,levels=c("Week 4","Week 8","Week 10","Week 12","Week 16","Week 21"))
+
+SuppTab5B<-GSISBGtab2 |> select(c(Estimate,CI.Lower,CI.Upper,
+                                 Evid.Ratio,Sex,Weeks,Site,Time))|>
+  mutate(Evid.Ratio=case_when(GSISBGtab2$Evid.Ratio<=10^(3/2)~"Strong",
+                              GSISBGtab2$Evid.Ratio<=10^(2)~"Very strong",
+                              GSISBGtab2$Evid.Ratio>10^(2)~"Decisive")) |>
+  group_by(Sex,Site) |> 
+  arrange(Weeks,Time)|>
+  gt() |>
+  row_group_order(c("Female - FP","Female - KC","Female - TC",
+                    "Male - FP","Male - KC", "Male - TC"))|>
+  tab_header(title = md("Supplementary Table 5B. Glucose-Stimulated Blood Glucose Compared to Fasted")) |>
+  tab_spanner(
+    label = "95% Credibility Interval (mM)",
+    columns = c(CI.Lower,CI.Upper)
+  )|>
+  # tab_spanner(
+  #   label = "Genotype Comparisons",
+  #   columns = c(Comp2,Comp1)
+  # )|>
+  cols_move_to_start(
+    columns = c(Sex,Site,Weeks,Time)
+  )|>
+  cols_label(CI.Lower = "Lower Bound",
+             CI.Upper = "Upper Bound",
+             Evid.Ratio = "Strength of Evidence",
+             # Comp2 = "Reference",
+             # Comp1 = "Contrast",
+             Estimate = html("Difference in<br>Blood Glucose (mM)"),
+             Weeks = html("Weeks<br>Post-Implant"),
+             Time = html("Time<br>Post-Glucose (min)"))|>
+  fmt_number(
+    columns = c(Estimate,CI.Lower,CI.Upper),
+    decimals = 1,
+    use_seps = TRUE
+  ) |>
+  tab_source_note(md("If no result is reported, the posterior probability did not exceed 95%.")) |>
+  tab_style(
+    locations = cells_column_labels(columns = everything()),
+    style     = list(
+      cell_borders(sides = "bottom", weight = px(3)),
+      cell_text(weight = "bold")
+    )
+  ) |>
+  tab_style(
+    locations = cells_title(groups = "title"),
+    style     = list(
+      cell_text(weight = "bold", size = 24)
+    )
+  ) |>
+  tab_options(
+    table.font.style = "Arial",
+    table.font.color = "black"
+  )
+SuppTab5B
+
+gtsave(SuppTab5B,"SuppTab5B.pdf",path="./Tables")
+
+
 ######Supplementary Table 6-8: GSIS CP#####
 GSISCPtab1<-filter(GSISCPtab1,Star=="*")
 GSISCPtab1$Sex<-ifelse(grepl("Female",GSISCPtab1$Hypothesis),"Female","Male")
@@ -4399,13 +4472,15 @@ GSISCPtab2$Time[is.na(GSISCPtab2$Time)]<-0
 GSISCPtab2$Weeks<-str_extract(GSISCPtab2$Hypothesis,"WeeksNom[0-9]{1,2}")|>
   str_replace_all("sNom"," ")
 
+GSISCPtab2$Weeks<-factor(GSISCPtab2$Weeks,levels=c("Week 8","Week 10","Week 12","Week 16","Week 21"))
+
 SuppTab7<-GSISCPtab2 |> select(c(Estimate,CI.Lower,CI.Upper,
                                  Evid.Ratio,Sex,Weeks,Site,Time))|>
   mutate(Evid.Ratio=case_when(GSISCPtab2$Evid.Ratio<=10^(3/2)~"Strong",
                               GSISCPtab2$Evid.Ratio<=10^(2)~"Very strong",
                               GSISCPtab2$Evid.Ratio>10^(2)~"Decisive")) |>
   group_by(Sex,Site) |> 
-  arrange(Weeks)|>
+  arrange(Weeks,Time)|>
   gt() |>
   row_group_order(c("Female - FP","Female - KC","Female - TC",
                     "Male - FP","Male - KC", "Male - TC"))|>
@@ -5064,12 +5139,9 @@ ArgTTBGtab1$RefSite<-str_split_fixed(ArgTTBGtab1$Hypothesis, "-\\(Intercept",2)[
   str_replace_all("FullGroupMale_","")
 ArgTTBGtab1$RefSite[is.na(ArgTTBGtab1$RefSite)]<-"FP"
 
-ArgTTBGtab1$Time<-str_split_fixed(ArgTTBGtab1$Hypothesis, boundary("word"),6)[,3]|>
-  str_replace_all("TimeNom","")|>
-  str_split_fixed("[:]",2)
-ArgTTBGtab1$Time<-ArgTTBGtab1$Time[,2]
-ArgTTBGtab1$Time[str_count(ArgTTBGtab1$Hypothesis,"-")==1]<-"0"
-ArgTTBGtab1$Time<-as.numeric(ArgTTBGtab1$Time)
+ArgTTBGtab1$Time<-str_extract(ArgTTBGtab1$Hypothesis,"TimeNom[0-9]{1,3}")|>
+  str_replace_all("TimeNom","")|>as.numeric()
+ArgTTBGtab1$Time[is.na(ArgTTBGtab1$Time)]<-0
 
 SuppTab14<-ArgTTBGtab1 |> select(c(Estimate,CI.Lower,CI.Upper,
                                    Evid.Ratio,Sex,Time,RefSite,ContrSite))|>
@@ -5318,12 +5390,9 @@ Instab1$RefSite<-str_split_fixed(Instab1$Hypothesis, "-\\(Intercept",2)[,2]|>
   str_replace_all("FullGroupMale_","")
 Instab1$RefSite[is.na(Instab1$RefSite)]<-"FP"
 
-Instab1$Time<-str_split_fixed(Instab1$Hypothesis, boundary("word"),6)[,3]|>
-  str_replace_all("TimeNom","")|>
-  str_split_fixed("[:]",2)
-Instab1$Time<-Instab1$Time[,2]
-Instab1$Time[str_count(Instab1$Hypothesis,"-")==1]<-"0"
-Instab1$Time<-as.numeric(Instab1$Time)
+Instab1$Time<-str_extract(Instab1$Hypothesis,"TimeNom[0-9]{1,3}")|>
+  str_replace_all("TimeNom","")|>as.numeric()
+Instab1$Time[is.na(Instab1$Time)]<-0
 
 SuppTab16<-Instab1 |> select(c(Estimate,CI.Lower,CI.Upper,
                                Evid.Ratio,Sex,Time,RefSite,ContrSite))|>
@@ -5559,12 +5628,9 @@ GLP1tab1$RefSite<-str_split_fixed(GLP1tab1$Hypothesis, "-\\(Intercept",2)[,2]|>
   str_replace_all("FullGroupMale_","")
 GLP1tab1$RefSite[is.na(GLP1tab1$RefSite)]<-"FP"
 
-GLP1tab1$Time<-str_split_fixed(GLP1tab1$Hypothesis, boundary("word"),6)[,3]|>
-  str_replace_all("TimeNom","")|>
-  str_split_fixed("[:]",2)
-GLP1tab1$Time<-GLP1tab1$Time[,2]
-GLP1tab1$Time[str_count(GLP1tab1$Hypothesis,"-")==1]<-"0"
-GLP1tab1$Time<-as.numeric(GLP1tab1$Time)
+GLP1tab1$Time<-str_extract(GLP1tab1$Hypothesis,"TimeNom[0-9]{1,3}")|>
+  str_replace_all("TimeNom","")|>as.numeric()
+GLP1tab1$Time[is.na(GLP1tab1$Time)]<-0
 
 SuppTab19<-GLP1tab1 |> select(c(Estimate,CI.Lower,CI.Upper,
                                Evid.Ratio,Sex,Time,RefSite,ContrSite))|>
@@ -5800,12 +5866,9 @@ Gcgtab1$RefSite<-str_split_fixed(Gcgtab1$Hypothesis, "-\\(Intercept",2)[,2]|>
   str_replace_all("FullGroupMale_","")
 Gcgtab1$RefSite[is.na(Gcgtab1$RefSite)]<-"FP"
 
-Gcgtab1$Time<-str_split_fixed(Gcgtab1$Hypothesis, boundary("word"),6)[,3]|>
-  str_replace_all("TimeNom","")|>
-  str_split_fixed("[:]",2)
-Gcgtab1$Time<-Gcgtab1$Time[,2]
-Gcgtab1$Time[str_count(Gcgtab1$Hypothesis,"-")==1]<-"0"
-Gcgtab1$Time<-as.numeric(Gcgtab1$Time)
+Gcgtab1$Time<-str_extract(Gcgtab1$Hypothesis,"TimeNom[0-9]{1,3}")|>
+  str_replace_all("TimeNom","")|>as.numeric()
+Gcgtab1$Time[is.na(Gcgtab1$Time)]<-0
 
 SuppTab22<-Gcgtab1 |> select(c(Estimate,CI.Lower,CI.Upper,
                                 Evid.Ratio,Sex,Time,RefSite,ContrSite))|>

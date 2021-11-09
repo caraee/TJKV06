@@ -1,17 +1,5 @@
-#Figure 1: pBW / pBG
-
-#Figure 2: p_GSIS_BG / p_GSIS_CP
-
-#Figure 3: p_ITT_BG / p_ITT_CP
-
-#Figure 4: p_ArgTT_BG / p_ArgTT_Ins / p_ArgTT_Gcg / p_ArgTT_GLP1
-
-#Figure 2: (pBW | pBG | pHbA1c) / (p_GSIS_BG | p_GSIS_ratCP) / p_GSIS_CP
 library("patchwork")
 
-#need to do fasted/random fed comparison; is there a mouse C-peptide panel I can include?
-#then finish checking TJKV03 models, TJKV07 ITT CP with fixed divergence
-#then check BIRKO model
 (Figure1<- (p_weeklyBW / p_weeklyBG) + plot_layout(guides = 'collect')+
     plot_annotation(tag_levels = 'A') & 
     theme(plot.tag = element_text(family = "Arial",color="black",size=14)))
